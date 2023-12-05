@@ -1,5 +1,6 @@
-package com.job_applicants;
+package com.job_applicants.Api;
 
+import com.job_applicants.applicant.Applicant;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -7,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class JobApplicantsApplicationTests {
 
 	@Test
-	void contextLoads() {
-	}
+	void testSearchByEmail() {
 
+	}
 }
