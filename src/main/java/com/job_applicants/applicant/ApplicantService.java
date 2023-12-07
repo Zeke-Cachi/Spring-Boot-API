@@ -50,7 +50,7 @@ public class ApplicantService {
   public ResponseEntity<Applicant> createOneApplicant(Applicant applicant) {
     Optional<Applicant> searchApplicantByEmail = applicantRepository.searchByEmail(applicant.getEmail());
     if (searchApplicantByEmail.isPresent()) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "applicant with id " + applicant.getId() + " already exists");
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "applicant with email " + applicant.getEmail() + " already exists");
     }
     Applicant savedApplicant = applicantRepository.save(applicant);
     return ResponseEntity.status(HttpStatus.CREATED).body(savedApplicant);
