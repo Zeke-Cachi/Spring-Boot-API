@@ -15,10 +15,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ApplicantServiceTest {
@@ -72,15 +75,30 @@ class ApplicantServiceTest {
             true);
     testApplicantService.createOneApplicant(testApplicant);
 
-    given(testAppRepository.searchByEmail(testApplicant.getEmail())).willReturn(Optional.of(testApplicant));
-    assertThatThrownBy(() -> testApplicantService.createOneApplicant(testApplicant))
+    given(testAppRepository.searchByEmail(anyString())).willReturn(Optional.of(testApplicant));
+
+    assertThatThrownBy( () -> testApplicantService.createOneApplicant(testApplicant))
             .isInstanceOf(ResponseStatusException.class)
             .hasMessageContaining("applicant with email " + testApplicant.getEmail() + " already exists");
   }
 
   @Test
-  @Disabled
-  void updateApplicant() {
+  void testIfApplicantIsUpdated() {
+
+    Applicant testApplicant = new Applicant(
+            "testName",
+            "testLastname",
+            "testemail@gmail.com",
+            5,
+            true);
+
+    when(testAppRepository.searchById(anyLong())).thenReturn(Optional.of(testApplicant));
+
+    testApplicantService.updateApplicant(1L, testApplicant);
+
+    verify(testAppRepository).searchById(1L);
+
+    verify(testAppRepository).save(testApplicant);
   }
 
   @Test
