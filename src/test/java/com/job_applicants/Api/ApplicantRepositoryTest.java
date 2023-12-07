@@ -2,12 +2,12 @@ package com.job_applicants.Api;
 
 import com.job_applicants.applicant.Applicant;
 import com.job_applicants.applicant.ApplicantRepository;
+//import com.job_applicants.applicant.CustomSearchesRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +17,8 @@ class ApplicantRepositoryTest {
 
   @Autowired
   private ApplicantRepository testRepository;
+//  @Autowired
+//  private CustomSearchesRepository testCustomSearchesRepository;
 
   @AfterEach
   void tearDown() {
@@ -67,6 +69,8 @@ class ApplicantRepositoryTest {
     Applicant testApplicant = testRepository.searchById(testApplicantById.getId()).get();
 
     assertThat(testApplicant.getId()).isEqualTo(testId);
-
   }
+
+  //------------------------
+
 }
