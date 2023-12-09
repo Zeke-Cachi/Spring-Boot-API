@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -20,8 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ApplicantServiceTest {
@@ -102,7 +103,24 @@ class ApplicantServiceTest {
   }
 
   @Test
-  @Disabled
   void deleteApplicant() {
+    Applicant testApplicant = new Applicant(
+            "testName",
+            "testLastname",
+            "testemail@gmail.com",
+            5,
+            true);
+
+    when(testAppRepository.searchById(anyLong())).thenReturn(Optional.of(testApplicant));
+
+    Long applicantIdToDelete = 1L;
+
+    ResponseEntity<String> response = testApplicantService.deleteApplicant(applicantIdToDelete);
+
+    verify(testAppRepository, times(1)).searchById(applicantIdToDelete);
+    verify(testAppRepository, times(1)).delete(testApplicant);
+
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(response.getBody()).isEqualTo("The applicant with id " + applicantIdToDelete + " has been successfully deleted");
   }
 }
